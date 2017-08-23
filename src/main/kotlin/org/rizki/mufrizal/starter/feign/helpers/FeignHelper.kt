@@ -2,6 +2,7 @@ package org.rizki.mufrizal.starter.feign.helpers
 
 import feign.Feign
 import feign.auth.BasicAuthRequestInterceptor
+import feign.form.FormEncoder
 import feign.jackson.JacksonDecoder
 import feign.jackson.JacksonEncoder
 
@@ -19,7 +20,7 @@ import feign.jackson.JacksonEncoder
 
 class FeignHelper {
     companion object {
-        fun <T> feignBuilder(clz: Class<T>): T = Feign.builder().encoder(JacksonEncoder()).decoder(JacksonDecoder()).target(clz, "https://api-753:8065")
-        fun <T> feignBuilderOAuth2Authentication(clz: Class<T>, clientId: String, clientSecret: String): T = Feign.builder().encoder(JacksonEncoder()).decoder(JacksonDecoder()).requestInterceptor(BasicAuthRequestInterceptor(clientId, clientSecret)).target(clz, "https://api-753:8089")
+        fun <T> feignBuilder(clz: Class<T>): T = Feign.builder().encoder(JacksonEncoder()).decoder(JacksonDecoder()).target(clz, "http://127.0.0.1:8585")
+        fun <T> feignBuilderOAuth2Authentication(clz: Class<T>, clientId: String, clientSecret: String): T = Feign.builder().encoder(FormEncoder()).decoder(JacksonDecoder()).requestInterceptor(BasicAuthRequestInterceptor(clientId, clientSecret)).target(clz, "http://127.0.0.1:8079")
     }
 }

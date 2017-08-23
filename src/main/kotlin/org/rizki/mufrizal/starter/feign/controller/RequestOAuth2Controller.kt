@@ -27,8 +27,7 @@ class RequestOAuth2Controller @Autowired constructor(val environment: Environmen
 
     @GetMapping(value = "/authorization")
     fun getAuthCode(@RequestParam("code", required = true) code: String, httpSession: HttpSession): String {
-        try {
-            val credential = FeignHelper.feignBuilderOAuth2Authentication(RequestOAuth2ServiceClient::class.java, clientId = environment.getRequiredProperty("axway_oauth2.client_id"), clientSecret = environment.getRequiredProperty("axway_oauth2.client_secret")).authorization(
+        val credential = FeignHelper.feignBuilderOAuth2Authentication(RequestOAuth2ServiceClient::class.java, clientId = environment.getRequiredProperty("axway_oauth2.client_id"), clientSecret = environment.getRequiredProperty("axway_oauth2.client_secret")).authorization(
                     grantType = environment.getRequiredProperty("axway_oauth2.grant_type"),
                     redirectUri = environment.getRequiredProperty("axway_oauth2.redirect_uri"),
                     code = code)
@@ -37,12 +36,6 @@ class RequestOAuth2Controller @Autowired constructor(val environment: Environmen
             httpSession.setAttribute("access_token", credential.access_token)
             httpSession.setAttribute("refresh_token", credential.refresh_token)
             return "redirect:/transaction"
-        } catch (e: FeignException) {
-            if (e.status() == 401 || e.status() == 403 || e.status() == 400) {
-                return "redirect:/"
-            }
-        }
-        return "redirect:/"
     }
 
 }

@@ -1,9 +1,9 @@
 package org.rizki.mufrizal.starter.feign.restclient
 
+import feign.HeaderMap
 import feign.Headers
 import feign.RequestLine
 import org.rizki.mufrizal.starter.feign.domain.Content
-import org.springframework.web.bind.annotation.RequestHeader
 
 
 /**
@@ -20,5 +20,5 @@ import org.springframework.web.bind.annotation.RequestHeader
 interface TransactionServiceClient {
     @RequestLine("GET /v7/transactions")
     @Headers("Content-Type: application/json")
-    fun getTransactions(@RequestHeader("Authorization") token: String): Content
+    fun getTransactions(@HeaderMap headerMap: Map<String, Any>): Content
 }

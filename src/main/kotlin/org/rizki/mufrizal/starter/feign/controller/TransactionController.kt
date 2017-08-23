@@ -24,5 +24,9 @@ import javax.servlet.http.HttpSession
 class TransactionController {
 
     @GetMapping(value = "/transaction")
-    fun getTransactions(httpSession: HttpSession): ResponseEntity<*> = ResponseEntity(FeignHelper.feignBuilder(TransactionServiceClient::class.java).getTransactions(httpSession.getAttribute("access_token").toString()), HttpStatus.OK)
+    fun getTransactions(httpSession: HttpSession): ResponseEntity<*> {
+        val map = HashMap<String, Any>()
+        map.put("Authorization", "Bearer ${httpSession.getAttribute("access_token")}")
+        return ResponseEntity(FeignHelper.feignBuilder(TransactionServiceClient::class.java).getTransactions(map), HttpStatus.OK)
+    }
 }
