@@ -1,0 +1,7 @@
+axway_oauth2:
+  client_id: 35771be1-f4b4-4bfd-86af-a145429551d1
+  client_secret: 3261ed66-5ffe-49bf-b27e-d743d916d8af
+  grant_type: authorization_code
+  redirect_uri: http://localhost/oauth_callback
+server:
+  port: 9999
