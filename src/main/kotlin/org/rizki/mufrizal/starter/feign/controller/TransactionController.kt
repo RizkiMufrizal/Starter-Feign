@@ -4,8 +4,9 @@ import org.rizki.mufrizal.starter.feign.helpers.FeignHelper
 import org.rizki.mufrizal.starter.feign.restclient.TransactionServiceClient
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.stereotype.Controller
 import javax.servlet.http.HttpSession
 
 
@@ -20,13 +21,15 @@ import javax.servlet.http.HttpSession
  * @File TransactionController
  *
  */
-@RestController
+@Controller
 class TransactionController {
 
     @GetMapping(value = "/transaction")
-    fun getTransactions(httpSession: HttpSession): ResponseEntity<*> {
+    fun getTransactions(httpSession: HttpSession, model: Model): String {
         val map = HashMap<String, Any>()
         map.put("Authorization", "Bearer ${httpSession.getAttribute("access_token")}")
-        return ResponseEntity(FeignHelper.feignBuilder(TransactionServiceClient::class.java).getTransactions(map), HttpStatus.OK)
+        val content = FeignHelper.feignBuilder(TransactionServiceClient::class.java).getTransactions(map)
+        model.addAttribute("transactions", content.content)
+        return "transaction"
     }
 }
